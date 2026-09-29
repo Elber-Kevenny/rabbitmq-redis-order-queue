@@ -1,0 +1,23 @@
+{
+  "name": "rabbitmq-redis-order-queue",
+  "version": "1.0.0",
+  "description": "High-performance, event-driven Order Management API using RabbitMQ for message queuing and Redis for distributed caching.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "author": "Elber",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.3",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
