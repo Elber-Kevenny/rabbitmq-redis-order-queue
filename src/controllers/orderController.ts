@@ -1,6 +1,8 @@
-import { Request, Response } from 'express';
+import { Request, Response } from 'express'; 
+import { sendOrderData } from '../index.js';
 
-interface Order {
+
+export interface Order {
   drinkOrder: string
 }
 
@@ -17,11 +19,15 @@ const ped = async (request: Request, response: Response) => {
 }
 
 const order = async (request: Request, response: Response) => {
-  const { drinkOrder } = request.body;
+  const { drinkOrder: order, cost, customer } = request.body;
+  const data = {
+    order,
+    customer
+  }
+  await sendOrderData(data);
 
-  coffeeQueue.push(drinkOrder);
-  console.log(coffeeQueue.length)
-  response.send(`Drink order added to queue`)
+  console.log(`Drink: ${order} is being processed for ${customer}`)
+  response.send(`Order processing`)
 }
 
 const getOrder = async (_request: Request, response: Response) => {
