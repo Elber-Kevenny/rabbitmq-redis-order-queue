@@ -1,7 +1,5 @@
 Inventory management will be added.
 
-Here is the exact translation to English with no additions or omissions:
-
 ```markdown
 # 🍹 Drink Order Queue System
 
