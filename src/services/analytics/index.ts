@@ -1,3 +1,5 @@
+//analytics
+
 import express from 'express';
 import amqp, { Channel, Connection } from 'amqplib';
 
@@ -8,7 +10,7 @@ const app = express();
 export interface Drink {
   latte: number,
   coffe: number,
-  cappuccine: number,
+  cappuccino: number,
   [key: string]: number
 }
 
@@ -17,23 +19,28 @@ app.use(express.urlencoded({ extended: true }));
 let connection: Connection;
 let channel: Channel;
 
-const drinkMap: Drink = { latte: 0, coffe: 0, cappuccine: 0 };
+const drinkMap: Drink = { latte: 0, coffe: 0, cappuccino: 0 };
 
 
 async function connectQueue() {
   try {
+    // @ts-expect-error
     connection = await amqp.connect('amqp://localhost:5672');
+    // @ts-expect-error
     channel = await connection.createChannel();
     await channel.assertQueue('analytics');
 
     channel.consume('analytics', async (data) => {
+      // @ts-expect-error
         const { content } = data;
       const { order, customer } = JSON.parse(content.toString());
       if (drinkMap[order] !== undefined) {
         drinkMap[order]++;
       }
-      console.log(`${order} being analyzed for ${customer}`);
-      channel.ack(data!);
+      if (order || customer ) {
+        console.log(`${order} being analyzed for ${customer}`);
+        channel.ack(data!);
+      }
       
     })
     
