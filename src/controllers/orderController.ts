@@ -33,7 +33,7 @@ const order = async (request: Request, response: Response) => {
     throw ApiError.badRequest('Fields order, quantity, and customer are required.');
   }
 
-  if (typeof quantity !== 'number' || quantity <= 0) {
+  if (quantity <= 0) {
     throw ApiError.badRequest('Quantity must be a positive number.', {errors: 'negative stock error'});
   }
 
