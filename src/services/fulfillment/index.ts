@@ -1,5 +1,5 @@
-import express from 'express';
-import amqp, { Channel, Connection } from 'amqplib';
+import express from "express";
+import amqp, { Channel, Connection } from "amqplib";
 
 const PORT = 3002;
 
@@ -11,23 +11,22 @@ let connection: Connection;
 let channel: Channel;
 // let orderCount = 0;
 
-
 async function connectQueue() {
   try {
     // @ts-expect-error
-    connection = await amqp.connect('amqp://localhost:5672');
+    connection = await amqp.connect("amqp://localhost:5672");
     // @ts-expect-error
-  channel = await connection.createChannel();
-    await channel.assertQueue('analytics');
-    await channel.assertQueue('drink-order');
-    channel.consume('drink-order', async (data) => {
+    channel = await connection.createChannel();
+    await channel.assertQueue("analytics");
+    await channel.assertQueue("drink-order");
+    channel.consume("drink-order", async (data) => {
       // @ts-expect-error
       const { content } = data;
       const { order, customer } = JSON.parse(content.toString());
       // if (order) {
       //   orderCount++
-      // } 
-      
+      // }
+
       // if (orderCount % 3 === 0) {
 
       //   const ms
@@ -41,19 +40,19 @@ async function connectQueue() {
       // }
       console.log(`${order} being fulfilled for ${customer}`);
       channel.ack(data!);
-      await sendOrderData({order, customer})
-    })
+      await sendOrderData({ order, customer });
+    });
   } catch (e) {
     console.error(e);
+  }
 }
-} 
 
 async function sendOrderData(data: any) {
-  await channel.sendToQueue('analytics', Buffer.from(JSON.stringify(data)))
+  await channel.sendToQueue("analytics", Buffer.from(JSON.stringify(data)));
 }
 
-connectQueue()
+connectQueue();
 
 app.listen(PORT, () => {
-  console.log(`Server listening on http://localhost:${PORT}`)
-})
+  console.log(`Server listening on http://localhost:${PORT}`);
+});

@@ -1,15 +1,13 @@
-
 interface ApiErrorParams {
   message: string;
   status: number;
   errors?: Record<string, any>;
 }
 
-
 export class ApiError extends Error {
   public readonly status: number;
   public readonly errors: Record<string, any>;
-  
+
   constructor({ message, status, errors = {} }: ApiErrorParams) {
     super(message);
 
@@ -17,8 +15,10 @@ export class ApiError extends Error {
     this.errors = errors;
   }
 
-
-  static badRequest(message: string, errors: Record<string, any> = {}): ApiError {
+  static badRequest(
+    message: string,
+    errors: Record<string, any> = {},
+  ): ApiError {
     return new ApiError({
       message,
       status: 400,
@@ -28,7 +28,7 @@ export class ApiError extends Error {
 
   static unauthorized(errors: Record<string, any> = {}): ApiError {
     return new ApiError({
-      message: 'unauthorized user',
+      message: "unauthorized user",
       status: 401,
       errors,
     });
@@ -36,7 +36,7 @@ export class ApiError extends Error {
 
   static notFound(errors: Record<string, any> = {}): ApiError {
     return new ApiError({
-      message: 'not found',
+      message: "not found",
       status: 404,
       errors,
     });
